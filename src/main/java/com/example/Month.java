@@ -1,4 +1,4 @@
-package main;
+package com.example;
 
 public enum Month {
     JANUARY, FEBRUARY, MARCH,

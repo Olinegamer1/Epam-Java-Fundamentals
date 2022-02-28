@@ -1,4 +1,4 @@
-package optional.task2;
+package com.example.optional.task2;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -8,16 +8,16 @@ public class MatrixUtils {
     private static final int LEFT_BORDER = -23;
     public static final int RIGHT_BORDER = 23;
 
-    public void printMatrix(int[][] matrix) {
+    public static void printMatrix(int[][] matrix) {
         for (int[] row : matrix) {
-            for (int elem : row) {
-                System.out.print(elem + " ");
+            for (int element : row) {
+                System.out.print(element + " ");
             }
             System.out.println();
         }
     }
 
-    public int[][] generateMatrix(int size) {
+    public static int[][] generateMatrix(int size) {
         int[][] matrix = new int[size][size];
         Random random = new Random();
 
@@ -29,7 +29,7 @@ public class MatrixUtils {
         return matrix;
     }
 
-    public void task3(int[][] matrix) {
+    public static void sumBetweenFirstTwoPositiveElements(int[][] matrix) {
         int sum = 0;
 
         for (int[] row : matrix) {
@@ -47,15 +47,34 @@ public class MatrixUtils {
                 }
             }
         }
-        System.out.println("================");
         System.out.println(sum);
     }
 
-    public void task4(int[][] matrix) {
-        int maxElem = Integer.MIN_VALUE;
+    public static void removeRowAndColumnWithMaxElements(int[][] matrix) {
         Set<Integer> maxElemRow = new HashSet<>();
         Set<Integer> maxElemCol = new HashSet<>();
+        findPosMaxElem(matrix, maxElemCol, maxElemRow);
 
+        int rowSize = matrix.length - maxElemRow.size();
+        int colSize = matrix.length - maxElemCol.size();
+        int[][] trimmedMatrix = new int[rowSize][colSize];
+
+        for (int i = 0, rowCounter = 0; i < matrix.length; i++) {
+            if (maxElemRow.contains(i)) {
+                continue;
+            }
+            for (int j = 0, colCounter = 0; j < matrix.length; j++) {
+                if (!maxElemCol.contains(j)) {
+                    trimmedMatrix[rowCounter][colCounter++] = matrix[i][j];
+                }
+            }
+            rowCounter++;
+        }
+        printMatrix(trimmedMatrix);
+    }
+
+    private static void findPosMaxElem(int[][] matrix, Set<Integer> maxElemCol, Set<Integer> maxElemRow) {
+        int maxElem = Integer.MIN_VALUE;
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
                 if (maxElem <= matrix[i][j]) {
@@ -69,26 +88,5 @@ public class MatrixUtils {
                 }
             }
         }
-
-        int rowSize = matrix.length - maxElemRow.size();
-        int colSize = matrix.length - maxElemCol.size();
-        int[][] trimmedMatrix = new int[rowSize][colSize];
-
-        int rowCounter = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            if (maxElemRow.contains(i)) {
-                continue;
-            }
-            int colCounter = 0;
-            for (int j = 0; j < matrix.length; j++) {
-                if (!maxElemCol.contains(j)) {
-                    trimmedMatrix[rowCounter][colCounter++] = matrix[i][j];
-                }
-            }
-            rowCounter++;
-        }
-        System.out.println("=================");
-        printMatrix(trimmedMatrix);
     }
-
 }
